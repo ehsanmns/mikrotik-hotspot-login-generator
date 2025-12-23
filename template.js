@@ -9,35 +9,65 @@ return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 <style>
 body {
+  margin:0;
   background:${config.bgColor};
-  color:${config.theme === 'dark' ? '#ffffff' : '#000000'};
-  font-family: Arial, sans-serif;
+  font-family:Arial,sans-serif;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  min-height:100vh;
 }
 
 .form {
   background:${config.formColor};
-  padding:20px;
   width:90%;
-  max-width:400px;
-  border-radius:8px;
-  text-align:center;
+  max-width:420px;
+  padding:24px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+  box-sizing:border-box;
+}
+
+.company-title {
+  text-align:${config.align};
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:20px;
+  background: linear-gradient(90deg, ${config.grad1}, ${config.grad2});
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation: ${config.animation}Anim 1s ease-out;
+}
+
+@keyframes fadeAnim {
+  from {opacity:0;}
+  to {opacity:1;}
+}
+
+@keyframes slideAnim {
+  from {opacity:0; transform:translateY(-15px);}
+  to {opacity:1; transform:translateY(0);}
 }
 
 input {
-  width:80%;
-  padding:10px;
+  width:100%;
+  padding:12px;
   margin:10px 0;
+  border-radius:6px;
+  border:none;
+  box-sizing:border-box;
+  font-size:15px;
 }
 
 input[type=submit] {
   background:${config.btnColor};
-  color:white;
-  border:none;
+  color:#fff;
   cursor:pointer;
+}
+
+@media(max-width:480px){
+  .company-title{font-size:22px;}
+  .form{padding:18px;}
 }
 </style>
 </head>
@@ -67,17 +97,19 @@ $(endif)
 <form name="login" action="$(link-login-only)" method="post"
 $(if chap-id) onSubmit="return doLogin()" $(endif)>
 <div class="form">
-<h2>${config.company}</h2>
+
+<div class="company-title">${config.company}</div>
 
 <input type="hidden" name="dst" value="$(link-orig)">
 <input name="username" placeholder="Username">
 <input name="password" type="password" placeholder="Password">
 <input type="submit" value="LOGIN">
-</div>
 
 $(if error)
-<div style="color:red">$(error)</div>
+<div style="color:red;margin-top:10px;">$(error)</div>
 $(endif)
+
+</div>
 </form>
 
 </body>
