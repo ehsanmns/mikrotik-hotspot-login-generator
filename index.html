@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>MikroTik Hotspot Login Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,10 +14,24 @@
   <label>Company Name</label>
   <input type="text" id="companyName" value="My Company">
 
-  <label>Theme</label>
-  <select id="theme">
-    <option value="dark">Dark</option>
-    <option value="light">Light</option>
+  <label>Company Name Gradient (Start)</label>
+  <input type="color" id="companyGrad1" value="#38bdf8">
+
+  <label>Company Name Gradient (End)</label>
+  <input type="color" id="companyGrad2" value="#2563eb">
+
+  <label>Company Name Alignment</label>
+  <select id="companyAlign">
+    <option value="center">Center</option>
+    <option value="left">Left</option>
+    <option value="right">Right</option>
+  </select>
+
+  <label>Title Animation</label>
+  <select id="titleAnim">
+    <option value="fade">Fade</option>
+    <option value="slide">Slide</option>
+    <option value="none">None</option>
   </select>
 
   <label>Background Color</label>
@@ -26,12 +41,12 @@
   <input type="color" id="formColor" value="#1e1e1e">
 
   <label>Button Color</label>
-  <input type="color" id="btnColor" value="#333333">
+  <input type="color" id="btnColor" value="#2563eb">
 
   <button onclick="generate()">Generate HTML</button>
   <button onclick="download()">Download login.html</button>
 
-  <textarea id="output" placeholder="Generated HTML..."></textarea>
+  <textarea id="output" placeholder="Generated MikroTik HTML..."></textarea>
 </div>
 
 <script src="template.js"></script>
