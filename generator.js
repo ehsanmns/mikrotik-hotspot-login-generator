@@ -1,20 +1,26 @@
 function generate() {
   const config = {
-    company: companyName.value,
-    grad1: companyGrad1.value,
-    grad2: companyGrad2.value,
-    align: companyAlign.value,
-    animation: titleAnim.value,
-    bgColor: bgColor.value,
-    formColor: formColor.value,
-    btnColor: btnColor.value
+    company: document.getElementById("companyName").value,
+    grad1: document.getElementById("companyGrad1").value,
+    grad2: document.getElementById("companyGrad2").value,
+    align: document.getElementById("companyAlign").value,
+    animation: document.getElementById("titleAnim").value,
+    bgColor: document.getElementById("bgColor").value,
+    formColor: document.getElementById("formColor").value,
+    btnColor: document.getElementById("btnColor").value
   };
 
-  output.value = hotspotTemplate(config);
+  document.getElementById("output").value = hotspotTemplate(config);
 }
 
 function download() {
-  const blob = new Blob([output.value], { type: "text/html" });
+  const content = document.getElementById("output").value;
+  if (!content) {
+    alert("Please generate HTML first.");
+    return;
+  }
+
+  const blob = new Blob([content], { type: "text/html" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "login.html";
