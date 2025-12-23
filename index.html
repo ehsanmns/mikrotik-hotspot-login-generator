@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MikroTik Hotspot Login Generator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="panel">
+  <h1>MikroTik Hotspot Login Generator</h1>
+
+  <label>Company Name</label>
+  <input type="text" id="companyName" value="My Company">
+
+  <label>Theme</label>
+  <select id="theme">
+    <option value="dark">Dark</option>
+    <option value="light">Light</option>
+  </select>
+
+  <label>Background Color</label>
+  <input type="color" id="bgColor" value="#121212">
+
+  <label>Form Color</label>
+  <input type="color" id="formColor" value="#1e1e1e">
+
+  <label>Button Color</label>
+  <input type="color" id="btnColor" value="#333333">
+
+  <button onclick="generate()">Generate HTML</button>
+  <button onclick="download()">Download login.html</button>
+
+  <textarea id="output" placeholder="Generated HTML..."></textarea>
+</div>
+
+<script src="template.js"></script>
+<script src="generator.js"></script>
+</body>
+</html>
