@@ -49,3 +49,14 @@ function download() {
 }
 
 update(); // render اولیه
+function copyCode() {
+  if (!output.value) {
+    alert("Nothing to copy!");
+    return;
+  }
+
+  navigator.clipboard.writeText(output.value).then(() => {
+    alert("HTML copied to clipboard ✔");
+  });
+}
+
