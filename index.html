@@ -2,55 +2,95 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MikroTik Hotspot Login Generator</title>
+<title>MikroTik Hotspot Login Generator – PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="panel">
-  <h1>MikroTik Hotspot Login Generator</h1>
+<div class="container">
 
-  <label>Company Name</label>
-  <input type="text" id="companyName" value="My Company">
+  <!-- LEFT: CONTROLS -->
+  <div class="panel">
+    <h1>Hotspot Login Builder</h1>
 
-  <label>Company Name Gradient (Start)</label>
-  <input type="color" id="companyGrad1" value="#38bdf8">
+    <h2>Company Title</h2>
+    <input id="companyName" value="My Company">
 
-  <label>Company Name Gradient (End)</label>
-  <input type="color" id="companyGrad2" value="#2563eb">
+    <label>Gradient Start</label>
+    <input type="color" id="companyGrad1" value="#38bdf8">
 
-  <label>Company Name Alignment</label>
-  <select id="companyAlign">
-    <option value="center">Center</option>
-    <option value="left">Left</option>
-    <option value="right">Right</option>
-  </select>
+    <label>Gradient End</label>
+    <input type="color" id="companyGrad2" value="#2563eb">
 
-  <label>Title Animation</label>
-  <select id="titleAnim">
-    <option value="fade">Fade</option>
-    <option value="slide">Slide</option>
-    <option value="none">None</option>
-  </select>
+    <label>Alignment</label>
+    <select id="companyAlign">
+      <option value="center">Center</option>
+      <option value="left">Left</option>
+      <option value="right">Right</option>
+    </select>
 
-  <label>Background Color</label>
-  <input type="color" id="bgColor" value="#121212">
+    <label>Font Size</label>
+    <input type="range" id="titleSize" min="18" max="42" value="28">
 
-  <label>Form Color</label>
-  <input type="color" id="formColor" value="#1e1e1e">
+    <label>Animation</label>
+    <select id="titleAnim">
+      <option value="fade">Fade</option>
+      <option value="slideDown">Slide Down</option>
+      <option value="slideUp">Slide Up</option>
+      <option value="zoom">Zoom</option>
+      <option value="flip">Flip</option>
+      <option value="glow">Glow</option>
+      <option value="none">None</option>
+    </select>
 
-  <label>Button Color</label>
-  <input type="color" id="btnColor" value="#2563eb">
+    <h2>Colors</h2>
+    <label>Background</label>
+    <input type="color" id="bgColor" value="#121212">
 
-  <button type="button" onclick="generate()">Generate HTML</button>
-  <button type="button" onclick="download()">Download login.html</button>
+    <label>Form</label>
+    <input type="color" id="formColor" value="#1e1e1e">
 
-  <textarea id="output" placeholder="Generated MikroTik HTML..."></textarea>
+    <label>Input BG</label>
+    <input type="color" id="inputBg" value="#ffffff">
+
+    <label>Input Text</label>
+    <input type="color" id="inputText" value="#000000">
+
+    <label>Button BG</label>
+    <input type="color" id="btnColor" value="#2563eb">
+
+    <label>Button Text</label>
+    <input type="color" id="btnTextColor" value="#ffffff">
+
+    <h2>Layout</h2>
+    <label>Form Width</label>
+    <input type="range" id="formWidth" min="280" max="520" value="420">
+
+    <label>Form Radius</label>
+    <input type="range" id="formRadius" min="0" max="30" value="12">
+
+    <label>Button Radius</label>
+    <input type="range" id="btnRadius" min="0" max="30" value="6">
+
+    <label>Shadow</label>
+    <select id="shadow">
+      <option value="on">On</option>
+      <option value="off">Off</option>
+    </select>
+
+    <button type="button" onclick="download()">Download login.html</button>
+    <textarea id="output"></textarea>
+  </div>
+
+  <!-- RIGHT: LIVE PREVIEW -->
+  <div class="preview">
+    <iframe id="previewFrame"></iframe>
+  </div>
+
 </div>
 
 <script src="template.js"></script>
 <script src="generator.js"></script>
 </body>
 </html>
-
