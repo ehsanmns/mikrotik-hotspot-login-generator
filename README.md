@@ -1,92 +1,224 @@
-# 🚀 MikroTik Hotspot Login Page Generator
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MikroTik Hotspot Login Page Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-> A modern, zero-backend, fully customizable **MikroTik Hotspot Login Page Generator**  
-> Built for ISPs, Network Engineers, SysAdmins, and MikroTik lovers ❤️
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-![MikroTik](https://img.shields.io/badge/MikroTik-Hotspot-blue)
-![Status](https://img.shields.io/badge/Status-Stable-success)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Stars](https://img.shields.io/badge/⭐-Star%20the%20repo-yellow)
+<style>
+body {
+  font-family: Inter, sans-serif;
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+  line-height: 1.7;
+}
 
----
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
 
-## ✨ What is this?
+h1, h2, h3 {
+  color: #f8fafc;
+}
 
-This project is a **client-side web application** that allows anyone to generate a **fully working, MikroTik-compatible Hotspot Login page** in seconds.
+h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
 
-No backend.  
-No installation.  
-No MikroTik variables broken.  
+.badges img {
+  margin-right: 6px;
+}
 
-Just open, customize, generate, and upload.
+blockquote {
+  border-left: 4px solid #38bdf8;
+  padding-left: 15px;
+  color: #cbd5f5;
+  margin: 20px 0;
+}
 
----
+hr {
+  border: none;
+  border-top: 1px solid #1e293b;
+  margin: 40px 0;
+}
 
-## 🎯 Why this exists
+ul {
+  padding-left: 20px;
+}
 
-Designing MikroTik login pages is usually:
-- ❌ Time-consuming
-- ❌ Hard to customize
-- ❌ Risky (breaking `$(chap-id)` and login logic)
+li {
+  margin-bottom: 8px;
+}
 
-This tool solves all of that.
+a {
+  color: #38bdf8;
+  text-decoration: none;
+}
 
----
+a:hover {
+  text-decoration: underline;
+}
 
-## 🧠 Key Features
+pre {
+  background: #020617;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  color: #22c55e;
+}
 
-✅ Fully compatible with **MikroTik Hotspot (CHAP / PAP)**  
-✅ Dark & Light themes  
-✅ Custom background, form & button colors  
-✅ Custom company / ISP name  
-✅ Clean, responsive HTML output  
-✅ Works **offline**  
-✅ GitHub Pages ready  
-✅ No dependencies  
-✅ Beginner-friendly  
+code {
+  background: #020617;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #22c55e;
+}
 
----
+.footer {
+  text-align: center;
+  margin-top: 60px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+</style>
+</head>
 
-## 🖥 Live Demo
+<body>
 
-👉 **Try it online:**  
-https://ehsanmns.github.io/mikrotik-hotspot-login-generator/
+<div class="container">
 
-## 📸 How it works
+<h1>🚀 MikroTik Hotspot Login Page Generator</h1>
 
-1. Open the generator
-2. Customize:
-   - Company name
-   - Theme
-   - Colors
-3. Click **Generate**
-4. Download `login.html`
-5. Upload to MikroTik Hotspot
-6. Done ✅
+<div class="badges">
+  <img src="https://img.shields.io/badge/MikroTik-Hotspot-blue">
+  <img src="https://img.shields.io/badge/Status-Stable-success">
+  <img src="https://img.shields.io/badge/License-MIT-green">
+  <img src="https://img.shields.io/badge/⭐-Star%20the%20repo-yellow">
+</div>
 
----
+<blockquote>
+A modern, zero-backend, <strong>fully visual & real-time</strong><br>
+<strong>MikroTik Hotspot Login Page Generator</strong><br>
+Built for ISPs, Network Engineers, SysAdmins, and MikroTik lovers ❤️
+</blockquote>
 
-## 🧩 Generated Output
+<hr>
 
-The generated HTML:
-- Keeps **all MikroTik variables intact**
-- Supports:
-  - `$(chap-id)`
-  - `$(chap-challenge)`
-  - `$(link-login-only)`
-  - `$(error)`
-- Is production-ready
+<h2>✨ What is this?</h2>
+<p>
+This project is a <strong>pure client-side web application</strong> that lets you design and generate
+<strong>beautiful, production-ready MikroTik Hotspot login pages</strong> — visually, instantly, and safely.
+</p>
 
----
+<p>
+No backend<br>
+No build step<br>
+No broken MikroTik variables
+</p>
 
-## 🛠 Installation (2 Minutes)
+<p>
+<strong>Open → Design → Preview → Export → Upload</strong>
+</p>
 
-### Option 1: Use Online (Recommended)
-Just open the GitHub Pages link.
+<hr>
 
-### Option 2: Run Locally
-```bash
-git clone https://github.com/ehsanmns/mikrotik-hotspot-login-generator.git
-cd mikrotik-hotspot-login-generator
-open index.html
+<h2>🎯 Why this exists</h2>
+<ul>
+  <li>❌ Slow and repetitive HTML edits</li>
+  <li>❌ Limited customization</li>
+  <li>❌ Easy to break CHAP / login logic</li>
+  <li>❌ No real preview</li>
+</ul>
 
+<p>This tool turns MikroTik captive portal design into a <strong>visual builder</strong>.</p>
+
+<hr>
+
+<h2>🧠 Key Features</h2>
+<ul>
+  <li>✅ 100% MikroTik Hotspot compatible (CHAP / PAP)</li>
+  <li>✅ Live Preview – realtime rendering</li>
+  <li>✅ Unlimited visual customization</li>
+  <li>✅ Gradient company / ISP name</li>
+  <li>✅ Text alignment (left / center / right)</li>
+  <li>✅ Title animations (Fade / Slide / Zoom)</li>
+  <li>✅ Mouse hover animations</li>
+  <li>✅ Fully responsive layout</li>
+  <li>✅ Copy HTML with one click</li>
+  <li>✅ Export ZIP ready for MikroTik</li>
+  <li>✅ Works fully offline</li>
+  <li>✅ GitHub Pages ready</li>
+</ul>
+
+<hr>
+
+<h2>🖥 Live Demo</h2>
+<p>
+👉 <a href="https://ehsanmns.github.io/mikrotik-hotspot-login-generator/" target="_blank">
+Try it online
+</a>
+</p>
+
+<hr>
+
+<h2>📸 How it works</h2>
+<ol>
+  <li>Open the generator</li>
+  <li>Customize everything visually</li>
+  <li>See changes instantly in Live Preview</li>
+  <li>Copy HTML or export MikroTik ZIP</li>
+  <li>Upload to MikroTik Hotspot</li>
+</ol>
+
+<hr>
+
+<h2>📦 MikroTik ZIP Export</h2>
+<pre>
+mikrotik-hotspot-login.zip
+├── login.html
+├── md5.js
+├── jquery.js
+└── img/
+</pre>
+
+<p>Upload files to:</p>
+<pre>IP → Hotspot → Files</pre>
+
+<hr>
+
+<h2>📂 Project Structure</h2>
+<pre>
+mikrotik-hotspot-login-generator/
+├── index.html
+├── generator.js
+├── template.js
+├── README.md
+</pre>
+
+<hr>
+
+<h2>🌟 Who is this for?</h2>
+<ul>
+  <li>ISPs</li>
+  <li>Hotels / Cafés / Public WiFi</li>
+  <li>Network Engineers</li>
+  <li>SysAdmins</li>
+  <li>MikroTik enthusiasts</li>
+</ul>
+
+<hr>
+
+<div class="footer">
+⭐ If this project helps you, consider starring the repository and sharing it.
+</div>
+
+</div>
+
+</body>
+</html>
