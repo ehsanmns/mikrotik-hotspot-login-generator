@@ -2,83 +2,245 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MikroTik Hotspot Login Generator</title>
+<title>MikroTik Hotspot Login Generator – PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="style.css">
 <style>
-body { font-family: Inter, sans-serif; margin:0; padding:0; background:#0f172a; color:#e5e7eb; }
-.container { max-width: 1200px; margin:auto; padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:20px; min-height:100vh; box-sizing:border-box;}
-.card { background:#1e293b; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.5);}
-label { display:block; margin-top:10px; font-weight:600; }
-input, select { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:none; }
-button { margin-top:15px; padding:10px 20px; border:none; border-radius:6px; cursor:pointer; background:#38bdf8; color:#000; font-weight:600; transition:0.3s; }
-button:hover { background:#0ea5e9; color:#fff; }
-textarea { width:100%; height:300px; margin-top:10px; border-radius:8px; padding:10px; font-family:monospace; background:#020617; color:#22c55e; border:none; resize:none;}
-iframe { width:100%; height:500px; border:none; border-radius:8px; background:#000; }
-h2 { margin-top:0; }
+/* Hover & button effects */
+button {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* Output textarea */
+#output {
+  width: 100%;
+  height: 200px;
+  margin-top: 10px;
+  padding: 10px;
+  font-family: monospace;
+  background:#020617;
+  color:#22c55e;
+  border-radius:6px;
+  border:none;
+  resize:none;
+}
+
+/* Preview iframe */
+iframe {
+  width:100%;
+  height:100%;
+  border:none;
+  border-radius:8px;
+}
+.preview {
+  height: 100%;
+}
+
+/* Range sliders */
+input[type=range] {
+  width: 100%;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- Controls -->
-  <div class="card">
-    <h2>Customize Login Page</h2>
-    
-    <label>Company Name</label>
-    <input id="companyName" type="text" value="My ISP">
 
-    <label>Gradient Start Color</label>
-    <input id="companyGrad1" type="color" value="#38bdf8">
-    <label>Gradient End Color</label>
-    <input id="companyGrad2" type="color" value="#0ea5e9">
+  <!-- LEFT: CONTROLS -->
+  <div class="panel">
+    <h1>Hotspot Login Builder</h1>
 
-    <label>Title Alignment</label>
+    <h2>Company Title</h2>
+    <input id="companyName" value="My Company">
+
+    <label>Gradient Start</label>
+    <input type="color" id="companyGrad1" value="#38bdf8">
+
+    <label>Gradient End</label>
+    <input type="color" id="companyGrad2" value="#2563eb">
+
+    <label>Alignment</label>
     <select id="companyAlign">
       <option value="center">Center</option>
       <option value="left">Left</option>
       <option value="right">Right</option>
     </select>
 
-    <label>Title Animation</label>
+    <label>Font Size</label>
+    <input type="range" id="titleSize" min="18" max="42" value="28">
+
+    <label>Animation</label>
     <select id="titleAnim">
       <option value="fade">Fade</option>
-      <option value="slide">Slide</option>
+      <option value="slideDown">Slide Down</option>
+      <option value="slideUp">Slide Up</option>
       <option value="zoom">Zoom</option>
+      <option value="flip">Flip</option>
+      <option value="glow">Glow</option>
+      <option value="bounce">Bounce</option>
+      <option value="shake">Shake</option>
+      <option value="none">None</option>
     </select>
 
-    <label>Background Color</label>
-    <input id="bgColor" type="color" value="#121212">
-    <label>Form Color</label>
-    <input id="formColor" type="color" value="#1e1e1e">
-    <label>Button Background</label>
-    <input id="btnColor" type="color" value="#333333">
-    <label>Button Text Color</label>
-    <input id="btnTextColor" type="color" value="#ffffff">
+    <h2>Colors</h2>
+    <label>Background</label>
+    <input type="color" id="bgColor" value="#121212">
 
-    <label>Form Radius (px)</label>
-    <input id="formRadius" type="number" value="8">
-    <label>Button Radius (px)</label>
-    <input id="btnRadius" type="number" value="4">
+    <label>Form</label>
+    <input type="color" id="formColor" value="#1e1e1e">
 
-    <button onclick="update()">Update Preview</button>
-    <button onclick="copyCode()">Copy HTML</button>
-    <button onclick="exportZIP()">Export ZIP</button>
+    <label>Input BG</label>
+    <input type="color" id="inputBg" value="#ffffff">
 
-    <label>Generated HTML</label>
+    <label>Input Text</label>
+    <input type="color" id="inputText" value="#000000">
+
+    <label>Button BG</label>
+    <input type="color" id="btnColor" value="#2563eb">
+
+    <label>Button Text</label>
+    <input type="color" id="btnTextColor" value="#ffffff">
+
+    <h2>Layout</h2>
+    <label>Form Width</label>
+    <input type="range" id="formWidth" min="280" max="520" value="420">
+
+    <label>Form Radius</label>
+    <input type="range" id="formRadius" min="0" max="30" value="12">
+
+    <label>Button Radius</label>
+    <input type="range" id="btnRadius" min="0" max="30" value="6">
+
+    <label>Shadow</label>
+    <select id="shadow">
+      <option value="on">On</option>
+      <option value="off">Off</option>
+    </select>
+
+    <button type="button" onclick="copyCode()">Copy HTML</button>
+    <button type="button" onclick="exportZIP()">Export ZIP</button>
+    <button type="button" onclick="download()">Download login.html</button>
+
     <textarea id="output" readonly></textarea>
   </div>
 
-  <!-- Live Preview -->
-  <div class="card">
-    <h2>Live Preview</h2>
+  <!-- RIGHT: LIVE PREVIEW -->
+  <div class="preview">
     <iframe id="previewFrame"></iframe>
   </div>
+
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="template.js"></script>
 <script src="generator.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+// ========================
+// Copy & Export
+// ========================
+function copyCode(){
+    const html = generateHTML(true); // includeErrorTags = true
+    navigator.clipboard.writeText(html);
+    alert("HTML copied ✔");
+}
+
+function exportZIP(){
+    const zip = new JSZip();
+    const html = generateHTML(true);
+    zip.file("login.html", html);
+    zip.generateAsync({type:"blob"}).then(blob=>{
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "mikrotik-hotspot-login.zip";
+        a.click();
+    });
+}
+
+// ========================
+// Live Preview
+// ========================
+function updatePreview() {
+    const html = generateHTML(false); // includeErrorTags = false
+    const iframe = document.getElementById("previewFrame");
+    iframe.srcdoc = html;
+}
+
+// ========================
+// Generate HTML
+// ========================
+function generateHTML(includeErrorTags){
+    const companyName = document.getElementById("companyName").value;
+    const grad1 = document.getElementById("companyGrad1").value;
+    const grad2 = document.getElementById("companyGrad2").value;
+    const align = document.getElementById("companyAlign").value;
+    const fontSize = document.getElementById("titleSize").value;
+    const anim = document.getElementById("titleAnim").value;
+    const bg = document.getElementById("bgColor").value;
+    const form = document.getElementById("formColor").value;
+    const inputBg = document.getElementById("inputBg").value;
+    const inputText = document.getElementById("inputText").value;
+    const btnBg = document.getElementById("btnColor").value;
+    const btnText = document.getElementById("btnTextColor").value;
+    const formWidth = document.getElementById("formWidth").value;
+    const formRadius = document.getElementById("formRadius").value;
+    const btnRadius = document.getElementById("btnRadius").value;
+    const shadow = document.getElementById("shadow").value;
+
+    const errorHTML = includeErrorTags ? '\n$(if error)\n$(error)\n$(endif)' : '';
+
+    return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${companyName} - Login</title>
+<style>
+body { background:${bg}; font-family:Arial,sans-serif; display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0; }
+.form { background:${form}; width:${formWidth}px; border-radius:${formRadius}px; padding:20px; text-align:center; ${shadow==='on'?'box-shadow:0 4px 12px rgba(0,0,0,0.5);':''} }
+h1 { background: linear-gradient(90deg, ${grad1}, ${grad2}); -webkit-background-clip:text; color:transparent; font-size:${fontSize}px; text-align:${align}; animation:${anim} 1s; margin:0 0 20px 0; }
+input[type=text], input[type=password] { width:80%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; background:${inputBg}; color:${inputText}; }
+input[type=submit] { width:80%; padding:10px; border:none; border-radius:${btnRadius}px; background:${btnBg}; color:${btnText}; cursor:pointer; transition:all 0.3s; ${shadow==='on'?'box-shadow:0 4px 6px rgba(0,0,0,0.3);':''} }
+input[type=submit]:hover { transform:scale(1.05); filter:brightness(1.2); }
+@keyframes fade { from {opacity:0;} to {opacity:1;} }
+@keyframes slideDown { from {transform:translateY(-50px);} to {transform:translateY(0);} }
+@keyframes slideUp { from {transform:translateY(50px);} to {transform:translateY(0);} }
+@keyframes zoom { from {transform:scale(0);} to {transform:scale(1);} }
+@keyframes flip { from {transform:rotateY(90deg);} to {transform:rotateY(0deg);} }
+@keyframes glow { 0%,100%{text-shadow:0 0 5px ${grad1},0 0 10px ${grad2};} 50%{text-shadow:0 0 15px ${grad2},0 0 20px ${grad1};} }
+@keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-15px);} 60%{transform:translateY(-7px);} }
+@keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 50%{transform:translateX(5px);} 75%{transform:translateX(-5px);} }
+</style>
+</head>
+<body>
+<form class="form" method="post" action="$(link-login-only)">
+<h1>${companyName}</h1>
+<input type="hidden" name="dst" value="$(link-orig)">
+<input type="hidden" name="popup" value="true">
+<input type="text" name="username" placeholder="Username">
+<input type="password" name="password" placeholder="Password">
+<input type="submit" value="LOGIN">
+${errorHTML}
+</form>
+</body>
+</html>
+`;
+}
+
+// ========================
+// Event listeners for live preview
+// ========================
+const inputs = document.querySelectorAll('input, select');
+inputs.forEach(el=>el.addEventListener('input', updatePreview));
+inputs.forEach(el=>el.addEventListener('change', updatePreview));
+
+// Initialize
+updatePreview();
+</script>
+
 </body>
 </html>
