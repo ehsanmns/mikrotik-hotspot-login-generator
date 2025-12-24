@@ -1,28 +1,46 @@
-function generate() {
+const ids = [
+  "companyName","companyGrad1","companyGrad2","companyAlign",
+  "titleSize","titleAnim","bgColor","formColor","inputBg",
+  "inputText","btnColor","btnTextColor","formWidth",
+  "formRadius","btnRadius","shadow"
+];
+
+ids.forEach(id => {
+  document.getElementById(id).addEventListener("input", update);
+});
+
+function update() {
+  const c = id => document.getElementById(id).value;
+
   const config = {
-    company: document.getElementById("companyName").value,
-    grad1: document.getElementById("companyGrad1").value,
-    grad2: document.getElementById("companyGrad2").value,
-    align: document.getElementById("companyAlign").value,
-    animation: document.getElementById("titleAnim").value,
-    bgColor: document.getElementById("bgColor").value,
-    formColor: document.getElementById("formColor").value,
-    btnColor: document.getElementById("btnColor").value
+    company: c("companyName"),
+    grad1: c("companyGrad1"),
+    grad2: c("companyGrad2"),
+    align: c("companyAlign"),
+    titleSize: c("titleSize"),
+    animation: c("titleAnim"),
+    bgColor: c("bgColor"),
+    formColor: c("formColor"),
+    inputBg: c("inputBg"),
+    inputText: c("inputText"),
+    btnColor: c("btnColor"),
+    btnTextColor: c("btnTextColor"),
+    formWidth: c("formWidth"),
+    formRadius: c("formRadius"),
+    btnRadius: c("btnRadius"),
+    shadow: c("shadow")
   };
 
-  document.getElementById("output").value = hotspotTemplate(config);
+  const html = hotspotTemplate(config);
+  output.value = html;
+  previewFrame.srcdoc = html;
 }
 
 function download() {
-  const content = document.getElementById("output").value;
-  if (!content) {
-    alert("Please generate HTML first.");
-    return;
-  }
-
-  const blob = new Blob([content], { type: "text/html" });
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
+  a.href = URL.createObjectURL(new Blob([output.value], { type: "text/html" }));
   a.download = "login.html";
   a.click();
 }
+
+update(); // initial render
