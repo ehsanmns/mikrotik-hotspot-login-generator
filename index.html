@@ -1,89 +1,55 @@
-<!DOCTYPE html>
+function hotspotTemplate(config){
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MikroTik Hotspot Login Generator – PRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+<title>${config.company} - Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style>
-body { margin:0; padding:0; font-family:sans-serif; background:#121212; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
-.container { display:flex; flex-wrap:wrap; width:100%; max-width:1200px; padding:20px; box-sizing:border-box; }
-.panel { flex:1; min-width:300px; max-width:400px; margin-right:20px; background:#1e1e1e; padding:20px; border-radius:8px; color:#fff; }
-.panel h1, .panel h2 { margin-top:10px; }
-.panel label { display:block; margin-top:10px; font-size:14px; }
-.panel input, .panel select { width:100%; padding:5px; margin-top:5px; border-radius:4px; border:none; }
-button { cursor:pointer; margin-top:10px; width:32%; padding:8px; border:none; border-radius:4px; background:#2563eb; color:#fff; transition:all 0.3s; }
-button:hover { transform:scale(1.05); filter:brightness(1.2); }
-#output { width:100%; height:200px; margin-top:10px; padding:10px; font-family:monospace; background:#020617; color:#22c55e; border-radius:6px; border:none; resize:none; }
-.preview { flex:2; min-width:300px; height:700px; }
-iframe { width:100%; height:100%; border:none; border-radius:8px; }
-input[type=range] { width:100%; }
+body { margin:0; padding:0; font-family:sans-serif; display:flex; justify-content:center; align-items:center; min-height:100vh; background:${config.bgColor}; }
+.form { background:${config.formColor}; border-radius:${config.formRadius}px; padding:20px; width:90%; max-width:400px; text-align:center; box-shadow:0 4px 8px rgba(0,0,0,0.5); }
+.form-header {
+    font-size:24px; font-weight:bold;
+    background: linear-gradient(to right, ${config.grad1}, ${config.grad2});
+    -webkit-background-clip:text; color:transparent;
+    text-align:${config.align};
+    margin-bottom:20px; transition:all 0.3s;
+    transform-style: preserve-3d; backface-visibility: hidden;
+    animation: ${config.titleAnim} 1s ease forwards;
+}
+.form-header:hover { text-shadow:0 0 10px ${config.grad1},0 0 20px ${config.grad2}; transform:scale(1.05); }
+input[type=text], input[type=password] { width:80%; margin:10px auto; padding:10px; border-radius:4px; border:1px solid #444; background:#2c2c2c; color:#fff; display:block; }
+input[type=submit] { width:80%; background:${config.btnColor}; color:${config.btnTextColor}; border-radius:${config.btnRadius}px; cursor:pointer; transition:all 0.3s; }
+${config.btnHover==='yes'?`input[type=submit]:hover { transform:scale(1.05); filter:brightness(1.2); }`:''}
+.error { background:#b71c1c; width:90%; margin:10px auto; padding:10px; color:#fff; border-radius:4px; }
+
+@keyframes fade { from{opacity:0;} to{opacity:1;} }
+@keyframes slide { from{transform:translateY(-20px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+@keyframes zoom { from{transform:scale(0.5);opacity:0;} to{transform:scale(1);opacity:1;} }
+@keyframes flip { from{transform:rotateY(180deg);opacity:0;} to{transform:rotateY(0deg);opacity:1;} }
+@keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-15px);} 60%{transform:translateY(-7px);} }
+@keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 50%{transform:translateX(5px);} 75%{transform:translateX(-5px);} }
+@keyframes glow { 0%,100%{text-shadow:0 0 5px ${config.grad1},0 0 10px ${config.grad2};} 50%{text-shadow:0 0 15px ${config.grad2},0 0 20px ${config.grad1};} }
+@keyframes rotate { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+@keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+@keyframes flipX { from{transform:rotateX(180deg);opacity:0;} to{transform:rotateX(0deg);opacity:1;} }
+@keyframes flipY { from{transform:rotateY(180deg);opacity:0;} to{transform:rotateY(0deg);opacity:1;} }
 </style>
 </head>
 <body>
-
-<div class="container">
-
-  <!-- LEFT: CONTROLS -->
-  <div class="panel">
-    <h1>Hotspot Login Builder</h1>
-
-    <h2>Company Title</h2>
-    <input id="companyName" value="My Company">
-    <label>Gradient Start</label>
-    <input type="color" id="companyGrad1" value="#38bdf8">
-    <label>Gradient End</label>
-    <input type="color" id="companyGrad2" value="#2563eb">
-    <label>Alignment</label>
-    <select id="companyAlign">
-      <option value="center">Center</option>
-      <option value="left">Left</option>
-      <option value="right">Right</option>
-    </select>
-    <label>Animation</label>
-    <select id="titleAnim">
-      <option value="fade">Fade</option>
-      <option value="slide">Slide</option>
-      <option value="zoom">Zoom</option>
-      <option value="flip">Flip</option>
-      <option value="bounce">Bounce</option>
-      <option value="shake">Shake</option>
-      <option value="glow">Glow</option>
-      <option value="rotate">Rotate</option>
-      <option value="pulse">Pulse</option>
-      <option value="flipX">Flip X</option>
-      <option value="flipY">Flip Y</option>
-      <option value="none">None</option>
-    </select>
-
-    <h2>Colors</h2>
-    <label>Background</label><input type="color" id="bgColor" value="#121212">
-    <label>Form</label><input type="color" id="formColor" value="#1e1e1e">
-    <label>Button BG</label><input type="color" id="btnColor" value="#2563eb">
-    <label>Button Text</label><input type="color" id="btnTextColor" value="#ffffff">
-
-    <label>Enable Button Hover?</label>
-    <select id="btnHover"><option value="yes">Yes</option><option value="no">No</option></select>
-
-    <h2>Layout</h2>
-    <label>Form Radius</label><input type="range" id="formRadius" min="0" max="30" value="12">
-    <label>Button Radius</label><input type="range" id="btnRadius" min="0" max="30" value="6">
-
-    <button type="button" onclick="copyCode()">Copy HTML</button>
-    <button type="button" onclick="exportZIP()">Export ZIP</button>
-    <textarea id="output" readonly></textarea>
+<form name="login" method="post" action="$(link-login-only)">
+  <div class="form">
+    <div class="form-header">${config.company}</div>
+    <div class="form-body">
+      <input type="hidden" name="dst" value="$(link-orig)">
+      <input type="hidden" name="popup" value="true">
+      <input name="username" type="text" placeholder="Username"><br>
+      <input name="password" type="password" placeholder="Password"><br>
+      <input type="submit" value="LOGIN"><br>
+    </div>
+    $(if error)<div class="error">$(error)</div>$(endif)
   </div>
-
-  <!-- RIGHT: LIVE PREVIEW -->
-  <div class="preview">
-    <iframe id="previewFrame"></iframe>
-  </div>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="generator.js"></script>
-<script src="template.js"></script>
-
+</form>
 </body>
-</html>
+</html>`;
+}
