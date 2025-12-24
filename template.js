@@ -1,102 +1,52 @@
-function hotspotTemplate(c) {
-return `<!DOCTYPE html>
-<html>
+function hotspotTemplate(config) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Hotspot Login</title>
-
+<title>Login Hotspot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style>
-body{
-  margin:0;
-  background:${c.bgColor};
-  font-family:Arial,sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-
-.form{
-  background:${c.formColor};
-  width:90%;
-  max-width:${c.formWidth}px;
-  padding:24px;
-  border-radius:${c.formRadius}px;
-  box-shadow:${c.shadow==="on"?"0 10px 25px rgba(0,0,0,.4)":"none"};
-}
-
-.company-title{
-  text-align:${c.align};
-  font-size:${c.titleSize}px;
-  font-weight:bold;
-  margin-bottom:20px;
-  background:linear-gradient(90deg,${c.grad1},${c.grad2});
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:${c.animation} 1s ease;
-}
-
-@keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1}}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
-@keyframes zoom{from{opacity:0;transform:scale(.7)}to{opacity:1}}
-@keyframes flip{from{transform:rotateX(90deg);opacity:0}to{transform:none;opacity:1}}
-@keyframes glow{
-  0%{filter:drop-shadow(0 0 0 transparent)}
-  100%{filter:drop-shadow(0 0 10px ${c.grad1})}
-}
-
-input{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border:none;
-  border-radius:6px;
-  background:${c.inputBg};
-  color:${c.inputText};
-}
-
-input[type=submit]{
-  background:${c.btnColor};
-  color:${c.btnTextColor};
-  border-radius:${c.btnRadius}px;
-}
-</style>
-</head>
-
-<body>
-<div class="form">
-  <div class="company-title">${c.company}</div>
-  <input placeholder="Username">
-  <input type="password" placeholder="Password">
-  <input type="submit" value="LOGIN">
-</div>
-</body>
-</html>`;
+body {
+  margin:0; padding:0; font-family:sans-serif; display:flex; justify-content:center; align-items:center;
+  min-height:100vh; background:${config.bgColor};
 }
 .form {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background:${config.formColor}; border-radius:${config.formRadius}px; padding:20px; width:90%; max-width:400px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.5); text-align:center;
 }
-
-.form:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+.form-header {
+  font-size:24px; font-weight:bold;
+  background: linear-gradient(to right, ${config.grad1}, ${config.grad2});
+  -webkit-background-clip: text; color: transparent;
+  text-align:${config.align};
+  animation:${config.titleAnim} 1s ease;
 }
-
-input {
-  transition: box-shadow 0.3s ease, border 0.3s ease;
-}
-
-input:focus {
-  box-shadow: 0 0 0 2px rgba(100,150,255,0.4);
-}
-
-button, input[type=submit] {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-button:hover, input[type=submit]:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+@keyframes fade { from {opacity:0} to {opacity:1} }
+@keyframes slide { from {transform:translateY(-20px);opacity:0} to {transform:translateY(0);opacity:1} }
+@keyframes zoom { from {transform:scale(0.5);opacity:0} to {transform:scale(1);opacity:1} }
+input { width:80%; margin:10px auto; padding:10px; border-radius:4px; border:1px solid #444; background:#2c2c2c; color:#fff; display:block; }
+input[type=submit] { width:80%; background:${config.btnColor}; color:${config.btnTextColor}; border-radius:${config.btnRadius}px; cursor:pointer; transition:0.3s; }
+input[type=submit]:hover { filter: brightness(1.2); }
+.error { background:#b71c1c; width:90%; margin:10px auto; padding:10px; color:#fff; border-radius:4px; }
+@media screen and (max-width:600px) { .form { width:95%; } }
+</style>
+</head>
+<body>
+<form name="login" method="post" action="$(link-login-only)">
+  <div class="form">
+    <div class="form-header">${config.company}</div>
+    <div class="form-body">
+      <input type="hidden" name="dst" value="$(link-orig)">
+      <input type="hidden" name="popup" value="true">
+      <input name="username" type="text" placeholder="Username"><br>
+      <input name="password" type="password" placeholder="Password"><br>
+      <input type="submit" value="LOGIN"><br>
+    </div>
+    $(if error)<div class="error">$(error)</div>$(endif)
+  </div>
+</form>
+</body>
+</html>
+`;
 }
