@@ -2,95 +2,153 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MikroTik Hotspot Login Generator – PRO</title>
+<title>MikroTik Hotspot Login Page Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<style>
+body {
+  font-family: Inter, sans-serif;
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+  background: #020617;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  height: calc(100vh - 70px);
+}
+
+.controls {
+  padding: 20px;
+  overflow-y: auto;
+  background: #020617;
+  border-right: 1px solid #1e293b;
+}
+
+.controls h3 {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.controls input,
+.controls select {
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: #020617;
+  border: 1px solid #334155;
+  color: #e5e7eb;
+  border-radius: 6px;
+}
+
+.actions button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #2563eb;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #1d4ed8;
+}
+
+.preview {
+  display: grid;
+  grid-template-rows: 50% 50%;
+}
+
+iframe {
+  width: 100%;
+  border: none;
+  background: #000;
+}
+
+textarea {
+  width: 100%;
+  height: 100%;
+  background: #020617;
+  color: #22c55e;
+  border: none;
+  padding: 15px;
+  font-family: monospace;
+  font-size: 12px;
+}
+</style>
 </head>
+
 <body>
+
+<header>🚀 MikroTik Hotspot Login Page Generator</header>
 
 <div class="container">
 
-  <!-- LEFT: CONTROLS -->
-  <div class="panel">
-    <h1>Hotspot Login Builder</h1>
+  <!-- CONTROLS -->
+  <div class="controls">
 
-    <h2>Company Title</h2>
-    <input id="companyName" value="My Company">
-
-    <label>Gradient Start</label>
+    <h3>Company</h3>
+    <input id="companyName" placeholder="Company Name" value="My WiFi">
     <input type="color" id="companyGrad1" value="#38bdf8">
+    <input type="color" id="companyGrad2" value="#6366f1">
 
-    <label>Gradient End</label>
-    <input type="color" id="companyGrad2" value="#2563eb">
-
-    <label>Alignment</label>
     <select id="companyAlign">
       <option value="center">Center</option>
       <option value="left">Left</option>
       <option value="right">Right</option>
     </select>
 
-    <label>Font Size</label>
-    <input type="range" id="titleSize" min="18" max="42" value="28">
-
-    <label>Animation</label>
     <select id="titleAnim">
       <option value="fade">Fade</option>
-      <option value="slideDown">Slide Down</option>
-      <option value="slideUp">Slide Up</option>
+      <option value="slide">Slide</option>
       <option value="zoom">Zoom</option>
-      <option value="flip">Flip</option>
-      <option value="glow">Glow</option>
-      <option value="none">None</option>
     </select>
 
-    <h2>Colors</h2>
-    <label>Background</label>
-    <input type="color" id="bgColor" value="#121212">
-
-    <label>Form</label>
-    <input type="color" id="formColor" value="#1e1e1e">
-
-    <label>Input BG</label>
-    <input type="color" id="inputBg" value="#ffffff">
-
-    <label>Input Text</label>
-    <input type="color" id="inputText" value="#000000">
-
-    <label>Button BG</label>
+    <h3>Colors</h3>
+    <input type="color" id="bgColor" value="#0f172a">
+    <input type="color" id="formColor" value="#020617">
     <input type="color" id="btnColor" value="#2563eb">
-
-    <label>Button Text</label>
     <input type="color" id="btnTextColor" value="#ffffff">
 
-    <h2>Layout</h2>
-    <label>Form Width</label>
-    <input type="range" id="formWidth" min="280" max="520" value="420">
+    <h3>Layout</h3>
+    <input type="number" id="formRadius" value="12">
+    <input type="number" id="btnRadius" value="8">
 
-    <label>Form Radius</label>
-    <input type="range" id="formRadius" min="0" max="30" value="12">
+    <div class="actions">
+      <button onclick="copyCode()">📋 Copy HTML</button>
+      <button onclick="exportZIP()">📦 Export MikroTik ZIP</button>
+    </div>
 
-    <label>Button Radius</label>
-    <input type="range" id="btnRadius" min="0" max="30" value="6">
-
-    <label>Shadow</label>
-    <select id="shadow">
-      <option value="on">On</option>
-      <option value="off">Off</option>
-    </select>
-
-    <button type="button" onclick="download()">Download login.html</button>
-    <textarea id="output"></textarea>
   </div>
 
-  <!-- RIGHT: LIVE PREVIEW -->
+  <!-- PREVIEW -->
   <div class="preview">
     <iframe id="previewFrame"></iframe>
+    <textarea id="output" readonly></textarea>
   </div>
 
 </div>
 
 <script src="template.js"></script>
 <script src="generator.js"></script>
+
 </body>
 </html>
