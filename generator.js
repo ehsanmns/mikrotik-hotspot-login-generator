@@ -1,3 +1,6 @@
+const output = document.getElementById("output");
+const previewFrame = document.getElementById("previewFrame");
+
 const ids = [
   "companyName","companyGrad1","companyGrad2","companyAlign",
   "titleSize","titleAnim","bgColor","formColor","inputBg",
@@ -32,15 +35,17 @@ function update() {
   };
 
   const html = hotspotTemplate(config);
+
   output.value = html;
   previewFrame.srcdoc = html;
 }
 
 function download() {
+  const blob = new Blob([output.value], { type: "text/html" });
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([output.value], { type: "text/html" }));
+  a.href = URL.createObjectURL(blob);
   a.download = "login.html";
   a.click();
 }
 
-update(); // initial render
+update(); // render اولیه
