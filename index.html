@@ -106,6 +106,12 @@ input[type=range] {
     <label>Button Text</label>
     <input type="color" id="btnTextColor" value="#ffffff">
 
+    <label>Enable Button Hover?</label>
+    <select id="btnHover">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
     <h2>Layout</h2>
     <label>Form Width</label>
     <input type="range" id="formWidth" min="280" max="520" value="420">
@@ -144,7 +150,7 @@ input[type=range] {
 // Copy & Export
 // ========================
 function copyCode(){
-    const html = generateHTML(true); // includeErrorTags = true
+    const html = generateHTML(true);
     navigator.clipboard.writeText(html);
     alert("HTML copied ✔");
 }
@@ -165,7 +171,7 @@ function exportZIP(){
 // Live Preview
 // ========================
 function updatePreview() {
-    const html = generateHTML(false); // includeErrorTags = false
+    const html = generateHTML(false);
     const iframe = document.getElementById("previewFrame");
     iframe.srcdoc = html;
 }
@@ -186,6 +192,7 @@ function generateHTML(includeErrorTags){
     const inputText = document.getElementById("inputText").value;
     const btnBg = document.getElementById("btnColor").value;
     const btnText = document.getElementById("btnTextColor").value;
+    const btnHover = document.getElementById("btnHover").value;
     const formWidth = document.getElementById("formWidth").value;
     const formRadius = document.getElementById("formRadius").value;
     const btnRadius = document.getElementById("btnRadius").value;
@@ -218,7 +225,7 @@ h1:hover {
 }
 input[type=text], input[type=password] { width:80%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; background:${inputBg}; color:${inputText}; }
 input[type=submit] { width:80%; padding:10px; border:none; border-radius:${btnRadius}px; background:${btnBg}; color:${btnText}; cursor:pointer; transition:all 0.3s; ${shadow==='on'?'box-shadow:0 4px 6px rgba(0,0,0,0.3);':''} }
-input[type=submit]:hover { transform:scale(1.05); filter:brightness(1.2); }
+${btnHover==='yes'?`input[type=submit]:hover { transform:scale(1.05); filter:brightness(1.2); }`:''}
 @keyframes fade { from {opacity:0;} to {opacity:1;} }
 @keyframes slideDown { from {transform:translateY(-50px);} to {transform:translateY(0);} }
 @keyframes slideUp { from {transform:translateY(50px);} to {transform:translateY(0);} }
