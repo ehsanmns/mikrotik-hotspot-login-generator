@@ -75,3 +75,28 @@ input[type=submit]{
 </body>
 </html>`;
 }
+.form {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+input {
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+
+input:focus {
+  box-shadow: 0 0 0 2px rgba(100,150,255,0.4);
+}
+
+button, input[type=submit] {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover, input[type=submit]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
