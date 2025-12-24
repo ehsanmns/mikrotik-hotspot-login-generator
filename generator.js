@@ -59,4 +59,24 @@ function copyCode() {
     alert("HTML copied to clipboard ✔");
   });
 }
+function exportZIP() {
+  const zip = new JSZip();
+
+  zip.file("login.html", output.value);
+
+  zip.file("md5.js", `
+function hexMD5(s){return s;}
+  `);
+
+  zip.file("jquery.js", "/* optional */");
+
+  zip.folder("img").file("bg.jpg", "");
+
+  zip.generateAsync({ type: "blob" }).then(blob => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "mikrotik-hotspot-login.zip";
+    a.click();
+  });
+}
 
