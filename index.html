@@ -2,153 +2,83 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MikroTik Hotspot Login Page Generator</title>
+<title>MikroTik Hotspot Login Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-  font-family: Inter, sans-serif;
-  margin: 0;
-  background: #0f172a;
-  color: #e5e7eb;
-}
-
-header {
-  padding: 20px;
-  text-align: center;
-  background: #020617;
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  height: calc(100vh - 70px);
-}
-
-.controls {
-  padding: 20px;
-  overflow-y: auto;
-  background: #020617;
-  border-right: 1px solid #1e293b;
-}
-
-.controls h3 {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #94a3b8;
-}
-
-.controls input,
-.controls select {
-  width: 100%;
-  margin-top: 6px;
-  margin-bottom: 12px;
-  padding: 8px;
-  background: #020617;
-  border: 1px solid #334155;
-  color: #e5e7eb;
-  border-radius: 6px;
-}
-
-.actions button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  background: #2563eb;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.actions button:hover {
-  background: #1d4ed8;
-}
-
-.preview {
-  display: grid;
-  grid-template-rows: 50% 50%;
-}
-
-iframe {
-  width: 100%;
-  border: none;
-  background: #000;
-}
-
-textarea {
-  width: 100%;
-  height: 100%;
-  background: #020617;
-  color: #22c55e;
-  border: none;
-  padding: 15px;
-  font-family: monospace;
-  font-size: 12px;
-}
+body { font-family: Inter, sans-serif; margin:0; padding:0; background:#0f172a; color:#e5e7eb; }
+.container { max-width: 1200px; margin:auto; padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:20px; min-height:100vh; box-sizing:border-box;}
+.card { background:#1e293b; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.5);}
+label { display:block; margin-top:10px; font-weight:600; }
+input, select { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:none; }
+button { margin-top:15px; padding:10px 20px; border:none; border-radius:6px; cursor:pointer; background:#38bdf8; color:#000; font-weight:600; transition:0.3s; }
+button:hover { background:#0ea5e9; color:#fff; }
+textarea { width:100%; height:300px; margin-top:10px; border-radius:8px; padding:10px; font-family:monospace; background:#020617; color:#22c55e; border:none; resize:none;}
+iframe { width:100%; height:500px; border:none; border-radius:8px; background:#000; }
+h2 { margin-top:0; }
 </style>
 </head>
-
 <body>
 
-<header>🚀 MikroTik Hotspot Login Page Generator</header>
-
 <div class="container">
+  <!-- Controls -->
+  <div class="card">
+    <h2>Customize Login Page</h2>
+    
+    <label>Company Name</label>
+    <input id="companyName" type="text" value="My ISP">
 
-  <!-- CONTROLS -->
-  <div class="controls">
+    <label>Gradient Start Color</label>
+    <input id="companyGrad1" type="color" value="#38bdf8">
+    <label>Gradient End Color</label>
+    <input id="companyGrad2" type="color" value="#0ea5e9">
 
-    <h3>Company</h3>
-    <input id="companyName" placeholder="Company Name" value="My WiFi">
-    <input type="color" id="companyGrad1" value="#38bdf8">
-    <input type="color" id="companyGrad2" value="#6366f1">
-
+    <label>Title Alignment</label>
     <select id="companyAlign">
       <option value="center">Center</option>
       <option value="left">Left</option>
       <option value="right">Right</option>
     </select>
 
+    <label>Title Animation</label>
     <select id="titleAnim">
       <option value="fade">Fade</option>
       <option value="slide">Slide</option>
       <option value="zoom">Zoom</option>
     </select>
 
-    <h3>Colors</h3>
-    <input type="color" id="bgColor" value="#0f172a">
-    <input type="color" id="formColor" value="#020617">
-    <input type="color" id="btnColor" value="#2563eb">
-    <input type="color" id="btnTextColor" value="#ffffff">
+    <label>Background Color</label>
+    <input id="bgColor" type="color" value="#121212">
+    <label>Form Color</label>
+    <input id="formColor" type="color" value="#1e1e1e">
+    <label>Button Background</label>
+    <input id="btnColor" type="color" value="#333333">
+    <label>Button Text Color</label>
+    <input id="btnTextColor" type="color" value="#ffffff">
 
-    <h3>Layout</h3>
-    <input type="number" id="formRadius" value="12">
-    <input type="number" id="btnRadius" value="8">
+    <label>Form Radius (px)</label>
+    <input id="formRadius" type="number" value="8">
+    <label>Button Radius (px)</label>
+    <input id="btnRadius" type="number" value="4">
 
-    <div class="actions">
-      <button onclick="copyCode()">📋 Copy HTML</button>
-      <button onclick="exportZIP()">📦 Export MikroTik ZIP</button>
-    </div>
+    <button onclick="update()">Update Preview</button>
+    <button onclick="copyCode()">Copy HTML</button>
+    <button onclick="exportZIP()">Export ZIP</button>
 
-  </div>
-
-  <!-- PREVIEW -->
-  <div class="preview">
-    <iframe id="previewFrame"></iframe>
+    <label>Generated HTML</label>
     <textarea id="output" readonly></textarea>
   </div>
 
+  <!-- Live Preview -->
+  <div class="card">
+    <h2>Live Preview</h2>
+    <iframe id="previewFrame"></iframe>
+  </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="template.js"></script>
 <script src="generator.js"></script>
-
 </body>
 </html>
