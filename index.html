@@ -1,89 +1,586 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>MikroTik Hotspot Login Generator – PRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-<style>
-body { margin:0; padding:0; font-family:sans-serif; background:#121212; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
-.container { display:flex; flex-wrap:wrap; width:100%; max-width:1200px; padding:20px; box-sizing:border-box; }
-.panel { flex:1; min-width:300px; max-width:400px; margin-right:20px; background:#1e1e1e; padding:20px; border-radius:8px; color:#fff; }
-.panel h1, .panel h2 { margin-top:10px; }
-.panel label { display:block; margin-top:10px; font-size:14px; }
-.panel input, .panel select { width:100%; padding:5px; margin-top:5px; border-radius:4px; border:none; }
-button { cursor:pointer; margin-top:10px; width:32%; padding:8px; border:none; border-radius:4px; background:#2563eb; color:#fff; transition:all 0.3s; }
-button:hover { transform:scale(1.05); filter:brightness(1.2); }
-#output { width:100%; height:200px; margin-top:10px; padding:10px; font-family:monospace; background:#020617; color:#22c55e; border-radius:6px; border:none; resize:none; }
-.preview { flex:2; min-width:300px; height:700px; }
-iframe { width:100%; height:100%; border:none; border-radius:8px; }
-input[type=range] { width:100%; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroTik Hotspot Login Page Generator - Pro Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header p {
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .panel {
+            flex: 1;
+            min-width: 350px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .panel h2 {
+            color: #3b82f6;
+            margin: 20px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+            font-size: 1.3rem;
+        }
+        
+        .panel h2:first-child {
+            margin-top: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        .color-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .color-group input[type="color"] {
+            width: 60px;
+            height: 40px;
+            padding: 0;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid rgba(148, 163, 184, 0.3);
+        }
+        
+        .color-group span {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .range-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .range-group input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(15, 23, 42, 0.6);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .range-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            border: 2px solid #1e293b;
+        }
+        
+        .range-value {
+            min-width: 40px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .button-group button {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 116, 139, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        
+        .output-box {
+            margin-top: 25px;
+        }
+        
+        #output {
+            width: 100%;
+            height: 200px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            resize: vertical;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            color: #22c55e;
+        }
+        
+        .preview {
+            flex: 2;
+            min-width: 400px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        
+        .preview-header h2 {
+            color: #3b82f6;
+            font-size: 1.3rem;
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .preview-actions button {
+            padding: 8px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 6px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .preview-actions button:hover {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .preview-frame {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid rgba(148, 163, 184, 0.2);
+        }
+        
+        #previewFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .panel, .preview {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .button-group button {
+                width: 100%;
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .loading.active {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Generating code...</p>
+    </div>
 
-<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-wifi"></i> MikroTik Hotspot Login Page Generator</h1>
+        <p>Create custom MikroTik hotspot login pages with this easy-to-use generator. The generated code is fully compatible with CHAP authentication and all MikroTik features.</p>
+    </div>
 
-  <!-- LEFT: CONTROLS -->
-  <div class="panel">
-    <h1>Hotspot Login Builder</h1>
+    <div class="container">
+        <div class="panel">
+            <h2><i class="fas fa-palette"></i> Appearance Settings</h2>
+            
+            <div class="form-group">
+                <label for="companyName">Company/Service Name</label>
+                <input type="text" id="companyName" value="My Internet Service" placeholder="Enter your company name">
+            </div>
+            
+            <div class="form-group">
+                <label for="companyAlign">Text Alignment</label>
+                <select id="companyAlign">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="titleAnim">Title Animation</label>
+                <select id="titleAnim">
+                    <option value="fade">Fade In</option>
+                    <option value="slide">Slide Down</option>
+                    <option value="zoom">Zoom In</option>
+                    <option value="bounce">Bounce</option>
+                    <option value="flip">Flip Horizontal</option>
+                    <option value="flipY">Flip Vertical</option>
+                    <option value="rotate">Rotate</option>
+                    <option value="pulse">Pulse</option>
+                    <option value="shake">Shake</option>
+                    <option value="none">No Animation</option>
+                </select>
+            </div>
+            
+            <h2><i class="fas fa-image"></i> Logo</h2>
+            <div class="form-group">
+                <label for="logoUpload">Upload Custom Logo</label>
+                <input type="file" id="logoUpload" accept="image/*">
+                <small style="color:#94a3b8; font-size:0.85rem; display:block; margin-top:5px;">Recommended: Max 200x100px, PNG with transparent background</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Or use default logo</label>
+                <select id="logoType">
+                    <option value="default">MikroTik Logo</option>
+                    <option value="text">Text Only</option>
+                    <option value="none">No Logo</option>
+                </select>
+            </div>
+            
+            <h2><i class="fas fa-fill-drip"></i> Colors</h2>
+            
+            <div class="form-group">
+                <label>Title Gradient Colors</label>
+                <div class="color-group">
+                    <input type="color" id="companyGrad1" value="#3b82f6">
+                    <span>Start</span>
+                    <input type="color" id="companyGrad2" value="#8b5cf6">
+                    <span>End</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Background Color</label>
+                <div class="color-group">
+                    <input type="color" id="bgColor" value="#0f172a">
+                    <span id="bgColorValue">#0f172a</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Form Background</label>
+                <div class="color-group">
+                    <input type="color" id="formColor" value="#1e293b">
+                    <span id="formColorValue">#1e293b</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Button Color</label>
+                <div class="color-group">
+                    <input type="color" id="btnColor" value="#2563eb">
+                    <span id="btnColorValue">#2563eb</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Button Text Color</label>
+                <div class="color-group">
+                    <input type="color" id="btnTextColor" value="#ffffff">
+                    <span id="btnTextColorValue">#ffffff</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Input Background</label>
+                <div class="color-group">
+                    <input type="color" id="inputBgColor" value="#0f172a">
+                    <span id="inputBgColorValue">#0f172a</span>
+                </div>
+            </div>
+            
+            <h2><i class="fas fa-sliders-h"></i> Layout & Effects</h2>
+            
+            <div class="form-group">
+                <label>Form Border Radius</label>
+                <div class="range-group">
+                    <input type="range" id="formRadius" min="0" max="30" value="12">
+                    <span class="range-value" id="formRadiusValue">12px</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Button Border Radius</label>
+                <div class="range-group">
+                    <input type="range" id="btnRadius" min="0" max="30" value="6">
+                    <span class="range-value" id="btnRadiusValue">6px</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Form Shadow Intensity</label>
+                <div class="range-group">
+                    <input type="range" id="shadowIntensity" min="0" max="50" value="20">
+                    <span class="range-value" id="shadowIntensityValue">20px</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Enable Button Hover Effect?</label>
+                <select id="btnHover">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Enable Form Glow?</label>
+                <select id="formGlow">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            
+            <h2><i class="fas fa-code"></i> Output</h2>
+            
+            <div class="button-group">
+                <button class="btn-primary" onclick="generateHTML()">
+                    <i class="fas fa-sync-alt"></i> Generate Code
+                </button>
+                <button class="btn-secondary" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copy HTML
+                </button>
+                <button class="btn-success" onclick="exportZIP()">
+                    <i class="fas fa-file-archive"></i> Export ZIP
+                </button>
+            </div>
+            
+            <div class="output-box">
+                <label for="output">Generated HTML Code:</label>
+                <textarea id="output" readonly></textarea>
+            </div>
+        </div>
+        
+        <div class="preview">
+            <div class="preview-header">
+                <h2><i class="fas fa-eye"></i> Live Preview</h2>
+                <div class="preview-actions">
+                    <button onclick="refreshPreview()">
+                        <i class="fas fa-redo"></i> Refresh
+                    </button>
+                    <button onclick="openPreviewInNewTab()">
+                        <i class="fas fa-external-link-alt"></i> Open
+                    </button>
+                </div>
+            </div>
+            <div class="preview-frame">
+                <iframe id="previewFrame"></iframe>
+            </div>
+        </div>
+    </div>
 
-    <h2>Company Title</h2>
-    <input id="companyName" value="My Company">
-    <label>Gradient Start</label>
-    <input type="color" id="companyGrad1" value="#38bdf8">
-    <label>Gradient End</label>
-    <input type="color" id="companyGrad2" value="#2563eb">
-    <label>Alignment</label>
-    <select id="companyAlign">
-      <option value="center">Center</option>
-      <option value="left">Left</option>
-      <option value="right">Right</option>
-    </select>
-    <label>Animation</label>
-    <select id="titleAnim">
-      <option value="fade">Fade</option>
-      <option value="slide">Slide</option>
-      <option value="zoom">Zoom</option>
-      <option value="flip">Flip</option>
-      <option value="bounce">Bounce</option>
-      <option value="shake">Shake</option>
-      <option value="glow">Glow</option>
-      <option value="rotate">Rotate</option>
-      <option value="pulse">Pulse</option>
-      <option value="flipX">Flip X</option>
-      <option value="flipY">Flip Y</option>
-      <option value="none">None</option>
-    </select>
+    <div class="footer">
+        <p>MikroTik Hotspot Login Generator v2.0 | Compatible with MikroTik RouterOS 6.x & 7.x</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">
+            This tool generates HTML code for MikroTik Hotspot login pages. 
+            The generated code includes support for CHAP authentication, MikroTik variables, and responsive design.
+        </p>
+    </div>
 
-    <h2>Colors</h2>
-    <label>Background</label><input type="color" id="bgColor" value="#121212">
-    <label>Form</label><input type="color" id="formColor" value="#1e1e1e">
-    <label>Button BG</label><input type="color" id="btnColor" value="#2563eb">
-    <label>Button Text</label><input type="color" id="btnTextColor" value="#ffffff">
-
-    <label>Enable Button Hover?</label>
-    <select id="btnHover"><option value="yes">Yes</option><option value="no">No</option></select>
-
-    <h2>Layout</h2>
-    <label>Form Radius</label><input type="range" id="formRadius" min="0" max="30" value="12">
-    <label>Button Radius</label><input type="range" id="btnRadius" min="0" max="30" value="6">
-
-    <button type="button" onclick="copyCode()">Copy HTML</button>
-    <button type="button" onclick="exportZIP()">Export ZIP</button>
-    <textarea id="output" readonly></textarea>
-  </div>
-
-  <!-- RIGHT: LIVE PREVIEW -->
-  <div class="preview">
-    <iframe id="previewFrame"></iframe>
-  </div>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="generator.js"></script>
-<script src="template.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="generator.js"></script>
+    <script src="template.js"></script>
 </body>
 </html>
