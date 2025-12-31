@@ -1,4 +1,4 @@
-// MikroTik Hotspot Login Template Generator
+// MikroTik Hotspot Login Template Generator - FIXED VERSION
 let currentLogoData = '';
 let templateCache = '';
 
@@ -45,7 +45,6 @@ function generateHTML() {
             // Logo HTML
             let logoHTML = '';
             
-            // Check for uploaded logo
             if (logoUpload.files.length > 0) {
                 const file = logoUpload.files[0];
                 if (file.type.startsWith('image/')) {
@@ -56,14 +55,12 @@ function generateHTML() {
                         createFinalHTML();
                     };
                     reader.readAsDataURL(file);
-                } else {
-                    logoHTML = getDefaultLogo(logoType, companyName);
-                    createFinalHTML();
+                    return;
                 }
-            } else {
-                logoHTML = getDefaultLogo(logoType, companyName);
-                createFinalHTML();
             }
+            
+            logoHTML = getDefaultLogo(logoType, companyName);
+            createFinalHTML();
             
             function createFinalHTML() {
                 // Button hover effect
@@ -84,7 +81,7 @@ function generateHTML() {
                         box-shadow: 0 ${shadowIntensity} ${parseInt(shadowIntensity) * 2}px rgba(0,0,0,0.3);
                     }`;
                 
-                // Generate the HTML template
+                // ==== HTML TEMPLATE - FIXED FOR MIKROTIK ====
                 const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -267,13 +264,25 @@ function generateHTML() {
     </style>
 </head>
 <body>
+
+<!-- HIDDEN FORM FOR CHAP AUTHENTICATION (CRITICAL) -->
+\$(if chap-id)
+<form name="sendin" action="\$(link-login-only)" method="post" style="display:none">
+    <input type="hidden" name="username" />
+    <input type="hidden" name="password" />
+    <input type="hidden" name="dst" value="\$(link-orig)" />
+    <input type="hidden" name="popup" value="true" />
+</form>
+\$(endif)
+
     <div class="main">
         <div class="wrap ${animationClass}">
             ${logoHTML}
             
             <div class="company-title">${companyName}</div>
             
-            <form name="login" action="\$(link-login-only)" method="post" onsubmit="return handleLogin(event)">
+            <!-- VISIBLE FORM (always submits to hidden form for CHAP) -->
+            <form name="login" action="\$(link-login-only)" method="post" \$(if chap-id)onsubmit="return doLogin()"\$(endif)>
                 <input type="hidden" name="dst" value="\$(link-orig)" />
                 <input type="hidden" name="popup" value="true" />
                 
@@ -325,135 +334,142 @@ function generateHTML() {
         </div>
     </div>
 
+    <!-- MIKROTIK MD5.JS SCRIPT (CRITICAL) -->
+    \$(if chap-id)
+    <script src="/md5.js"></script>
+    \$(endif)
+
+    <!-- LOGIN HANDLER SCRIPT -->
     <script>
-        // MikroTik Hotspot Login Handler
-        // Supports both normal and CHAP authentication
+        // ===== MIKROTIK STANDARD LOGIN HANDLER =====
+        // This is the EXACT pattern used by MikroTik's default login page
         
         \$(if chap-id)
-        // CHAP Authentication Handler
-        function handleLogin(e) {
-            e.preventDefault();
-            
+        // CHAP Authentication Handler (Standard MikroTik)
+        function doLogin() {
             console.log('CHAP authentication initiated');
             
-            // Get form values
-            const username = document.querySelector('input[name="username"]').value.trim();
-            const password = document.querySelector('input[name="password"]').value;
+            // Copy values to hidden form
+            document.sendin.username.value = document.login.username.value;
             
-            if (!username || !password) {
-                alert('Please enter both username and password');
+            // Calculate CHAP hash using MikroTik's md5.js
+            if (typeof hexMD5 === 'function') {
+                document.sendin.password.value = hexMD5('\$(chap-id)' + 
+                    document.login.password.value + 
+                    '\$(chap-challenge)');
+            } else {
+                // Fallback: try to load md5.js dynamically
+                console.error('MD5.js not loaded! Loading now...');
+                loadMD5(function() {
+                    if (typeof hexMD5 === 'function') {
+                        document.sendin.password.value = hexMD5('\$(chap-id)' + 
+                            document.login.password.value + 
+                            '\$(chap-challenge)');
+                        document.sendin.submit();
+                    } else {
+                        // Last resort fallback
+                        alert('Authentication error. Please try again.');
+                        return false;
+                    }
+                });
                 return false;
             }
             
-            // Create hidden form for CHAP
-            const hiddenForm = document.createElement('form');
-            hiddenForm.method = 'post';
-            hiddenForm.action = '\$(link-login-only)';
-            hiddenForm.style.display = 'none';
-            
-            // Add hidden inputs
-            const addHiddenInput = (name, value) => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = name;
-                input.value = value;
-                hiddenForm.appendChild(input);
-            };
-            
-            addHiddenInput('dst', '\$(link-orig)');
-            addHiddenInput('popup', 'true');
-            addHiddenInput('username', username);
-            
-            // Check if MD5 function is available
-            if (typeof hexMD5 === 'function') {
-                console.log('Using CHAP MD5 authentication');
-                const chapHash = hexMD5('\$(chap-id)' + password + '\$(chap-challenge)');
-                addHiddenInput('password', chapHash);
-            } else {
-                console.log('MD5 not available, using plain password');
-                addHiddenInput('password', password);
-            }
-            
-            // Submit the form
-            document.body.appendChild(hiddenForm);
-            hiddenForm.submit();
-            
+            // Submit the hidden form
+            document.sendin.submit();
             return false;
         }
+        
+        // Dynamic MD5.js loader as fallback
+        function loadMD5(callback) {
+            var script = document.createElement('script');
+            script.src = '/md5.js';
+            script.onload = function() {
+                console.log('MD5.js loaded dynamically');
+                if (callback) callback();
+            };
+            script.onerror = function() {
+                console.error('Failed to load MD5.js');
+                if (callback) callback();
+            };
+            document.head.appendChild(script);
+        }
         \$(else)
-        // Normal Authentication Handler
-        function handleLogin(e) {
-            const username = document.querySelector('input[name="username"]').value.trim();
-            const password = document.querySelector('input[name="password"]').value;
-            
-            if (!username || !password) {
-                alert('Please enter both username and password');
-                e.preventDefault();
-                return false;
-            }
-            
-            console.log('Normal authentication initiated');
-            return true;
+        // Normal Authentication (no CHAP)
+        function doLogin() {
+            return true; // Let form submit normally
         }
         \$(endif)
         
-        // Enhance form UX
+        // ===== ENHANCED UX FEATURES =====
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form[name="login"]');
-            const inputs = form.querySelectorAll('input[type="text"], input[type="password"]');
-            
-            inputs.forEach(input => {
-                // Add focus effect
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'translateY(-2px)';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'translateY(0)';
-                });
-                
-                // Auto-focus first empty input
-                if (!input.value && input.type === 'text') {
-                    setTimeout(() => input.focus(), 100);
-                }
-            });
-            
-            // Add loading state to submit button
-            form.addEventListener('submit', function() {
-                const submitBtn = this.querySelector('input[type="submit"]');
-                const originalText = submitBtn.value;
-                submitBtn.value = 'Connecting...';
-                submitBtn.disabled = true;
-                submitBtn.style.opacity = '0.8';
-                
-                // Revert after 5 seconds if still on page
-                setTimeout(() => {
-                    if (submitBtn.disabled) {
-                        submitBtn.value = originalText;
-                        submitBtn.disabled = false;
-                        submitBtn.style.opacity = '1';
-                    }
-                }, 5000);
-            });
-        });
-    </script>
-    
-    <!-- Include MikroTik's MD5 library if CHAP is enabled -->
-    \$(if chap-id)
-    <script>
-        // Fallback MD5 function if /md5.js is not available
-        if (typeof hexMD5 === 'undefined') {
-            console.warn('MD5 library not found. Loading fallback...');
-            
-            // Simple fallback - in production, ensure /md5.js is available
-            function hexMD5(str) {
-                console.log('Fallback MD5 called for:', str.substring(0, 10) + '...');
-                // This is just a placeholder - real implementation should be in /md5.js
-                return '00000000000000000000000000000000';
+            // Auto-focus username field
+            var usernameField = document.querySelector('input[name="username"]');
+            if (usernameField && !usernameField.value) {
+                setTimeout(function() {
+                    usernameField.focus();
+                }, 300);
             }
+            
+            // Enter key to submit
+            var passwordField = document.querySelector('input[name="password"]');
+            if (passwordField) {
+                passwordField.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        document.querySelector('input[type="submit"]').click();
+                    }
+                });
+            }
+            
+            // Loading state for submit button
+            var form = document.forms.login;
+            if (form) {
+                form.addEventListener('submit', function() {
+                    var submitBtn = this.querySelector('input[type="submit"]');
+                    if (submitBtn) {
+                        var originalText = submitBtn.value;
+                        submitBtn.value = 'Connecting...';
+                        submitBtn.disabled = true;
+                        
+                        // Reset after 10 seconds if still on page
+                        setTimeout(function() {
+                            if (submitBtn.disabled) {
+                                submitBtn.value = originalText;
+                                submitBtn.disabled = false;
+                            }
+                        }, 10000);
+                    }
+                });
+            }
+        });
+        
+        // ===== SAFE FALLBACK MD5 FUNCTION =====
+        // This will ONLY be used if /md5.js fails to load
+        if (typeof hexMD5 === 'undefined') {
+            console.warn('MD5.js not loaded. Creating safe placeholder.');
+            window.hexMD5 = function(str) {
+                console.error('MD5 function called but md5.js not loaded!');
+                console.error('String to hash:', str.substring(0, 20) + '...');
+                
+                // Show user-friendly error
+                setTimeout(function() {
+                    var errorDiv = document.createElement('div');
+                    errorDiv.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#dc3545; color:white; padding:15px; border-radius:5px; z-index:9999; max-width:90%;';
+                    errorDiv.innerHTML = '<strong>Authentication Error:</strong> Please refresh the page or contact administrator.';
+                    document.body.appendChild(errorDiv);
+                    
+                    setTimeout(function() {
+                        if (errorDiv.parentNode) {
+                            errorDiv.parentNode.removeChild(errorDiv);
+                        }
+                    }, 5000);
+                }, 100);
+                
+                // Return dummy hash that will fail auth (safest option)
+                return '00000000000000000000000000000000';
+            };
         }
     </script>
-    \$(endif)
 </body>
 </html>`;
                 
